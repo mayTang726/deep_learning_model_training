@@ -84,7 +84,7 @@ def main():
     train = model_module.train
     val = model_module.val
     test = model_module.test
-    optimizer = optim.Adam(model.parameters(), lr=params.lr, weight_decay=0.0001) #建议值 0.0005
+    optimizer = optim.Adam(model.parameters(), lr=params.lr, weight_decay=0.001) #建议值 0.0005
     scheduler = StepLR(optimizer, step_size=3, gamma=0.1)
     '''
         pretreatment dataset start

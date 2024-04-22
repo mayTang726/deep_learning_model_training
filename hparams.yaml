@@ -1,0 +1,56 @@
+default: &DEFAULT
+  num_epochs: 10
+  batch_size: 256
+
+MLP:
+  <<: *DEFAULT
+  model_name: mlp
+  data_dir: "wikiArt" # https://www.kaggle.com/zalando-research/fashionmnist
+  checkpoint_dir: "checkpoints/mlp"
+  log_dir: 'logs/mlp'
+  dataset_class: "WikiArtDataset"
+  flatten: True
+  gpu_vis_dev: '0'
+  num_epochs: 10
+  batch_size: 256
+  lr: 0.0001
+
+CNN:
+  <<: *DEFAULT
+  model_name: cnn
+  data_dir: "wikiArt"
+  checkpoint_dir: "checkpoints/cnn"
+  log_dir: 'logs/cnn'
+  dataset_class: "WikiArtDataset"
+  flatten: False
+  gpu_vis_dev: '0'
+  num_epochs: 10
+  batch_size: 256
+  lr: 0.001
+
+CAPSULE:
+  <<: *DEFAULT
+  model_name: capsule
+  data_dir: "wikiArt"
+  checkpoint_dir: "checkpoints/capsule"
+  log_dir: 'logs/capsule'
+  dataset_class: "WikiArtDataset"
+  flatten: False
+  gpu_vis_dev: '0'
+  num_epochs: 10
+  batch_size: 128
+  lr: 0.001
+
+
+RESNET:
+  <<: *DEFAULT
+  model_name: resnet
+  data_dir: "wikiArt"
+  checkpoint_dir: "checkpoints/resnet"
+  log_dir: 'logs/resnet'
+  dataset_class: "WikiArtDataset"
+  flatten: False
+  gpu_vis_dev: '0'
+  num_epochs: 10
+  batch_size: 256
+  lr: 0.001
