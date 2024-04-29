@@ -5,7 +5,7 @@ default: &DEFAULT
 MLP:
   <<: *DEFAULT
   model_name: mlp
-  data_dir: "wikiArt" # https://www.kaggle.com/zalando-research/fashionmnist
+  data_dir: "wikiArt" 
   checkpoint_dir: "checkpoints/mlp"
   log_dir: 'logs/mlp'
   dataset_class: "WikiArtDataset"
@@ -13,7 +13,9 @@ MLP:
   gpu_vis_dev: '0'
   num_epochs: 10
   batch_size: 256
-  lr: 0.0001
+  weight_decay: 0.0001
+  step_size: 3
+  lr: 0.001
 
 CNN:
   <<: *DEFAULT
@@ -26,6 +28,8 @@ CNN:
   gpu_vis_dev: '0'
   num_epochs: 10
   batch_size: 256
+  weight_decay: 0.0001
+  step_size: 3
   lr: 0.001
 
 CAPSULE:
@@ -39,6 +43,8 @@ CAPSULE:
   gpu_vis_dev: '0'
   num_epochs: 10
   batch_size: 128
+  weight_decay: 0.0001
+  step_size: 3
   lr: 0.001
 
 
@@ -53,4 +59,6 @@ RESNET:
   gpu_vis_dev: '0'
   num_epochs: 10
   batch_size: 256
+  weight_decay: 0.0001
+  step_size: 3
   lr: 0.001

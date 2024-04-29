@@ -12,11 +12,13 @@ class net(nn.Module):
     def __init__(self):
         super(net, self).__init__()
         # input_kernel: 3，output_kernel: 32，kernel_size: 3x3，stride: 1, padding:1
-        self.conv1 = nn.Conv2d(3, 32, 3, 1, 1) # [32, 224, 224]
-        self.conv2 = nn.Conv2d(32, 64, 3, 1, 1) #after maxpooling -> [64, 112, 112]
-        self.dropout1 = nn.Dropout(0.2)
-        self.fc1 = nn.Linear(64 * 56 * 56, 128) # after maxpooling ->[64, 56, 56]
-        self.dropout2 = nn.Dropout(0.2)
+        self.conv1 = nn.Conv2d(3, 64, 3, 1, 1) # [32, 224, 224]
+        self.conv2 = nn.Conv2d(64, 128, 3, 1, 1) #after maxpooling -> [64, 112, 112]
+        self.dropout1 = nn.Dropout(0.3)
+        self.conv3 = nn.Conv2d(128, 256, 3, 1, 1)  #[128, 56, 56]
+        self.dropout2 = nn.Dropout(0.3)
+        self.fc1 = nn.Linear(256 * 28 * 28, 128) # after maxpooling ->[64, 28, 28]
+        self.dropout3 = nn.Dropout(0.3)
         self.fc2 = nn.Linear(128, 3) # 定义了第二个全连接层，输入大小为上一层的输出大小（即 128），输出大小为类别数量3
     def forward(self, x):
         nn = self.conv1(x) # 经过第一个卷积层
@@ -28,10 +30,15 @@ class net(nn.Module):
         nn = F.max_pool2d(nn, 2) # [2,2,0]
         nn = self.dropout1(nn) # 应用第一个dropout层
 
+        nn = self.conv3(nn) # 经过第二个卷积层，
+        nn = F.relu(nn) 
+        nn = F.max_pool2d(nn, 2) # [2,2,0]
+        nn = self.dropout2(nn) # 应用第三个dropout层
+
         nn = torch.flatten(nn, 1) # 将特征图平为一维向量，用于linear层
         nn = self.fc1(nn) # 第一个全连接层
         nn = F.relu(nn) # 经过 ReLU 激活函数
-        nn = self.dropout2(nn) # 再应用第二个 Dropout 层
+        nn = self.dropout3(nn) # 再应用第二个 Dropout 层
         output = self.fc2(nn) # 经过第二个全连接层
 
         return output 
