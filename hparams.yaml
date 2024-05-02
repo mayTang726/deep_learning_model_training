@@ -11,11 +11,11 @@ MLP:
   dataset_class: "WikiArtDataset"
   flatten: True
   gpu_vis_dev: '0'
-  num_epochs: 10
-  batch_size: 256
+  num_epochs: 15
+  batch_size: 128
   weight_decay: 0.0001
-  step_size: 3
-  lr: 0.001
+  step_size: 2
+  lr: 0.1
 
 CNN:
   <<: *DEFAULT
@@ -32,22 +32,6 @@ CNN:
   step_size: 3
   lr: 0.001
 
-CAPSULE:
-  <<: *DEFAULT
-  model_name: capsule
-  data_dir: "wikiArt"
-  checkpoint_dir: "checkpoints/capsule"
-  log_dir: 'logs/capsule'
-  dataset_class: "WikiArtDataset"
-  flatten: False
-  gpu_vis_dev: '0'
-  num_epochs: 10
-  batch_size: 128
-  weight_decay: 0.0001
-  step_size: 3
-  lr: 0.001
-
-
 RESNET:
   <<: *DEFAULT
   model_name: resnet
@@ -61,4 +45,17 @@ RESNET:
   batch_size: 256
   weight_decay: 0.0001
   step_size: 3
+  lr: 0.001
+
+
+SVM:
+  <<: *DEFAULT
+  model_name: svm
+  data_dir: "wikiArt"
+  checkpoint_dir: "checkpoints/svm"
+  log_dir: 'logs/svm'
+  dataset_class: "WikiArtDataset"
+  flatten: False
+  gpu_vis_dev: '0'
+  batch_size: 256
   lr: 0.001

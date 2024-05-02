@@ -9,43 +9,15 @@ from sklearn import preprocessing
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 # resolve dataset 
-'''
-    1. resolve dataset 
-        1.1 connect image to each artist 
-        1.2 change data to matrix
-'''
-
-# class WikiArtDataset(Dataset):
-#     def __init__(self, data_dir, file_name, label_name, flatten=True):
-#         """
-#         data_dir (str): Path to data containing data and labels. 
-#         X_filename (str): Name of file containing input data. 
-#         y_filename (str): Name of file containing labels.
-#         """
-#         df = pd.read_csv(os.path.join(data_dir, file_name)) #get dataset
-#         labels = pd.read_csv(os.path.join(data_dir, label_name))
-#         # change data to tensor
-#         self.data = torch.tensor(df.values)
-#         # change label to tensor
-#         labels = labels['label'].tolist()
-#         self.labels = torch.tensor(labels,dtype=torch.long)
-
-#     def __getitem__(self, index):
-#         X = self.data[index].float()
-#         y = self.labels[index]
-#         return X, y
-
-#     def __len__(self):
-#         return len(self.data)
-
-
 class WikiArtDataset(Dataset):
-    def __init__(self, data_dir, file_name, label_name, flatten=True):
+    def __init__(self, data_dir, file_name, label_name, flatten=True, device=any):
         """
         data_dir (str): Path to data containing data and labels. 
         X_filename (str): Name of file containing input data. 
         y_filename (str): Name of file containing labels.
         """
+        self.device = device
+
         df = pd.read_csv(os.path.join(data_dir, file_name)) #get dataset
         labels = pd.read_csv(os.path.join(data_dir, label_name))
         # label_list = [list(map(int, label.split(','))) for label in labels['label']]
@@ -78,10 +50,10 @@ class WikiArtDataset(Dataset):
             self.data.append(image)
 
         # change label to tensor
-        self.labels = torch.tensor(labels,dtype=torch.long)
+        self.labels = torch.tensor(labels,dtype=torch.long).to(self.device)
 
     def __getitem__(self, index):
-        X = self.data[index].float()
+        X = self.data[index].float().to(self.device)
         y = self.labels[index]
         return X, y
 
