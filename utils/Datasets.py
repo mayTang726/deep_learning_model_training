@@ -10,14 +10,14 @@ from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 # resolve dataset 
 class WikiArtDataset(Dataset):
-    def __init__(self, data_dir, file_name, label_name, flatten=True, device=any):
+    def __init__(self, data_dir, file_name, label_name, flatten=True, device=any, local_image_path=''):
         """
         data_dir (str): Path to data containing data and labels. 
         X_filename (str): Name of file containing input data. 
         y_filename (str): Name of file containing labels.
         """
         self.device = device
-
+        local_image_path = local_image_path
         df = pd.read_csv(os.path.join(data_dir, file_name)) #get dataset
         labels = pd.read_csv(os.path.join(data_dir, label_name))
         # label_list = [list(map(int, label.split(','))) for label in labels['label']]
@@ -40,7 +40,7 @@ class WikiArtDataset(Dataset):
 
                 if you wanna run this codes, you should change this path to your own local image path
             ''' 
-            path = "/Users/stan/Desktop/deep_learning/assignment1/archive/wikiart/wikiart/" + image_path
+            path = local_image_path + image_path
             image = Image.open(path).convert('RGB')  # 确保图像为RGB格式
             image = preprocess(image)
             return image

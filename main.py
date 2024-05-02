@@ -24,11 +24,15 @@ from utils import Datasets
 from utils.params import Params
 from utils.plotting import plot_training
 from utils import Change_dataset
+from utils import match_image_name
 
-# update learning rate
+# learning rate
 from torch.optim.lr_scheduler import StepLR 
 
 def main():
+    # local image path
+    local_image_path = 'C:/Users/vedant/OneDrive/Desktop/wikiart/wikiart/'
+    
     start_time = time.strftime("%d%m%y_%H%M%S")
     # 
     parser = argparse.ArgumentParser()  
@@ -101,7 +105,8 @@ def main():
         data = data_all[data_all['genre'].isin(['portrait', 'landscape', 'abstract'])]
         data = data[['genre','file_name']] # only use genre and file_name as training dataset content
         data = data.rename(columns = {'genre' : 'label'})
-        
+        # for matching window local image name, because windows will change non-english file name, it will make csv file name can not match local image name
+        match_image_name.match_name_fun(local_image_path, data)
         # 选少量的数据进行训练
         if params.model_name == 'svm':
             data = data.sample(frac=1).reset_index(drop=True)
@@ -135,9 +140,9 @@ def main():
 
         # data precreate
         Dataset = getattr(Datasets, params.dataset_class) #从模块Datasets中获取名为params.dataset_class的类
-        train_data = Dataset(params.data_dir,"X_train.csv","y_train.csv", flatten=params.flatten, device = device) 
-        val_data = Dataset(params.data_dir,"X_val.csv","y_val.csv", flatten=params.flatten, device = device)
-        test_data = Dataset(params.data_dir,"X_test.csv","y_test.csv", flatten=params.flatten, device = device)
+        train_data = Dataset(params.data_dir,"X_train.csv","y_train.csv", flatten=params.flatten, device = device, local_image_path=local_image_path) 
+        val_data = Dataset(params.data_dir,"X_val.csv","y_val.csv", flatten=params.flatten, device = device, local_image_path=local_image_path)
+        test_data = Dataset(params.data_dir,"X_test.csv","y_test.csv", flatten=params.flatten, device = device, local_image_path=local_image_path)
         
         torch.save(train_data, os.path.join(params.data_dir, 'train_data.pt'))
         torch.save(val_data, os.path.join(params.data_dir, 'val_data.pt'))
